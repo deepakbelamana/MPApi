@@ -5,17 +5,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "MPMovie")
 public class MPMovie {
 
-    private String Movie;
+    private String movie;
     private boolean MPPAPExist;
     private boolean MPCExist;
     private boolean MPRVExist;
 
     public String getMovie() {
-        return Movie;
+        return movie;
     }
 
     public void setMovie(String movie) {
-        Movie = movie;
+        this.movie = movie;
     }
 
     public boolean isMPPAPExist() {
@@ -45,7 +45,7 @@ public class MPMovie {
     @Override
     public String toString() {
         return "Movie{" +
-                "Movie='" + Movie + '\'' +
+                "Movie='" + movie + '\'' +
                 ", MPPAPExist=" + MPPAPExist +
                 ", MPCExist=" + MPCExist +
                 ", MPRVExist=" + MPRVExist +
