@@ -5,13 +5,15 @@ import com.Moviepapers.MPapi.models.MPPaper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MPPaperService  {
 
     @Autowired
     MPPaperRepository MPPaperRepository;
 
-    public MPPaper findMPPaperByMovieName(String movie) {
+    public List<MPPaper> findMPPaperByMovieName(String movie) {
         return MPPaperRepository.findByMovie(movie);
     }
 }

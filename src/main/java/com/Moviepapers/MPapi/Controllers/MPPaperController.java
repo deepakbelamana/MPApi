@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 public class MPPaperController {
@@ -16,7 +18,7 @@ public class MPPaperController {
     @Autowired
     MPPaperService MPPaperService;
     @GetMapping("/mp-paper/{movie}")
-    public MPPaper getMPPaperBasedOnMovieName(@PathVariable String movie) {
+    public List<MPPaper> getMPPaperBasedOnMovieName(@PathVariable String movie) {
         return MPPaperService.findMPPaperByMovieName(movie);
     }
 }

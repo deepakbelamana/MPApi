@@ -19,11 +19,20 @@ public class MPMovieController {
     @Autowired
     MPMovieService MPMovieService;
 
+    /**
+     * fetched all movie names in db
+     * @return
+     */
     @GetMapping("/moviesList")
     public List<String> getAllMovieNamesAsList() {
         return MPMovieRespository.findAll().stream().map(mpMovie -> mpMovie.getMovie()).toList();
     }
 
+    /**
+     * fetches single document based on movie name
+     * @param movieName
+     * @return
+     */
     @GetMapping("/movie/{movieName}")
     public MPMovie getMPMovie(@PathVariable String movieName) {
         return MPMovieService.getMPMovieBasedOnMovie(movieName);
