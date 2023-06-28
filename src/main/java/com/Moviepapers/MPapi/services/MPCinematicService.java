@@ -15,4 +15,15 @@ public class MPCinematicService {
     public List<MPCinematic> getMPCinematicListBasedOnMovie(String movie) {
         return MPCinematicRepository.findByMovie(movie);
     }
+
+    public String deleteMPCinematicBasedOnMovie(String movie)
+    {
+        try{
+            MPCinematicRepository.deleteByMovie(movie);
+            return "Success";
+        }
+       catch(Exception e){
+            return e.getMessage();
+       }
+    }
 }

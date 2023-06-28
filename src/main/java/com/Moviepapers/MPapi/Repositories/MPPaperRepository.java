@@ -9,5 +9,6 @@ public interface MPPaperRepository extends MongoRepository<MPPaper,String> {
 
     List<MPPaper> findByMovie(String movie);
 
+    void deleteByMovie(String Movie);
 
 }

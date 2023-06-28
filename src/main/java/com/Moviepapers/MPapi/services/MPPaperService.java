@@ -16,4 +16,16 @@ public class MPPaperService  {
     public List<MPPaper> findMPPaperByMovieName(String movie) {
         return MPPaperRepository.findByMovie(movie);
     }
+
+    public String deleteMPPaperBasedOnMovie(String movie)
+    {
+        try{
+            MPPaperRepository.deleteByMovie(movie);
+            return"Success";
+        }
+        catch (Exception e)
+        {
+            return e.getMessage();
+        }
+    }
 }
