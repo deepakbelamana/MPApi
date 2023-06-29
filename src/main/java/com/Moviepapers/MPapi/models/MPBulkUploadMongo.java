@@ -10,6 +10,16 @@ public class MPBulkUploadMongo {
 
     private int imageEndNumber;
 
+    private String imgExtension;
+
+    public String getImgExtension() {
+        return imgExtension;
+    }
+
+    public void setImgExtension(String imgExtension) {
+        this.imgExtension = imgExtension;
+    }
+
     public String getMovie() {
         return movie;
     }
