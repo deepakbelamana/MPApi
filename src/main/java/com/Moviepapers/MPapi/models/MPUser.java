@@ -1,5 +1,6 @@
 package com.Moviepapers.MPapi.models;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -10,7 +11,6 @@ public class MPUser {
     private String email;
     private String nickname;
     private String password;
-    private String   phone;
     private String[] liked;
     private boolean subscribed;
 
@@ -54,11 +54,4 @@ public class MPUser {
         this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 }

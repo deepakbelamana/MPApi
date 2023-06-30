@@ -7,7 +7,9 @@ import org.springframework.data.mongodb.repository.Update;
 
 public interface MPUserRepository extends MongoRepository<MPUser,String> {
 
-    @Query("{'phone' : ?0}")
+    @Query("{'email' : ?0}")
     @Update("{'$set': {'liked': ?1}}")
-    void updateUserLikedImgInfo(String phone,String[] likedImg);
+    void updateUserLikedImgInfo(String email,String[] likedImg);
+
+    MPUser findByEmail(String email);
 }
