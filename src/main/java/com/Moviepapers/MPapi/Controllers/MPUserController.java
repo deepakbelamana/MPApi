@@ -4,8 +4,11 @@ import com.Moviepapers.MPapi.Repositories.MPUserRepository;
 import com.Moviepapers.MPapi.models.MPUser;
 import com.Moviepapers.MPapi.services.MPUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -23,18 +26,18 @@ public class MPUserController {
      * @return
      */
     @PostMapping("/register")
-    public String registerUser(@RequestBody MPUser mpUser){
+    public ResponseEntity registerUser(@RequestBody MPUser mpUser){
         try{
             if(MPUserService.checkIfUserExist(mpUser.getEmail())!=null){
-                return "User already Exists";
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("email already exists, login with same email");
             }
             else{
                 MPUserRepository.insert(mpUser);
-                return "Success";
+                return ResponseEntity.ok("registered Successfully, redirecting to login page");
             }
         }
         catch (Exception e){
-            return e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("unable to register now.!");
         }
     }
 
@@ -44,13 +47,13 @@ public class MPUserController {
      * @return
      */
     @PostMapping("/updateLikedInfo")
-    public String updateUserLikedInfo(@RequestBody MPUser mpUser){
+    public ResponseEntity updateUserLikedInfo(@RequestBody MPUser mpUser){
         try{
             MPUserRepository.updateUserLikedImgInfo(mpUser.getEmail(), mpUser.getLiked());
-            return "Success";
+            return ResponseEntity.ok("Updated your collection");
         }
         catch (Exception e){
-            return e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("unable to update the likes collection");
         }
     }
 
