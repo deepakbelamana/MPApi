@@ -6,6 +6,8 @@ import com.Moviepapers.MPapi.services.MPUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,6 +22,9 @@ public class MPUserController {
     @Autowired
     MPUserService MPUserService;
 
+    @Autowired
+    PasswordEncoder pwdEncoder;
+
     /**
      * registers the user
      * @param mpUser
@@ -32,6 +37,12 @@ public class MPUserController {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("email already exists, login with same email");
             }
             else{
+                /**
+                 * encrypting user password before registering
+                 * the user
+                 */
+                mpUser.setPassword(pwdEncoder.encode(mpUser.getPassword()));
+                //registering the user.
                 MPUserRepository.insert(mpUser);
                 return ResponseEntity.ok("registered Successfully, redirecting to login page");
             }
