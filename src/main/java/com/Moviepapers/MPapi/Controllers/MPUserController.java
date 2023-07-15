@@ -52,6 +52,12 @@ public class MPUserController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity loginUser(@RequestBody MPUser mpUser)
+    {
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * updates when user likes a image
      * @param mpUser
