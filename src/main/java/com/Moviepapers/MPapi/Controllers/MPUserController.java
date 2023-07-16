@@ -52,10 +52,32 @@ public class MPUserController {
         }
     }
 
+    /**
+     * makes the user login
+     * @param mpUser
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity loginUser(@RequestBody MPUser mpUser)
     {
-        return ResponseEntity.ok().build();
+        try{
+            MPUser mpUserFromDB=MPUserService.checkIfUserExist(mpUser.getEmail());
+            if(MPUserService.checkIfUserExist(mpUser.getEmail())!=null){
+                if(pwdEncoder.matches(mpUser.getPassword(),mpUserFromDB.getPassword())) {
+                    return ResponseEntity.ok("Login Successfully ,redirecting to home page");
+                } else {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid email/password, try again");
+                }
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not exist, kindly register yourself");
+            }
+        }
+       catch(Exception exc)
+       {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong, try again");
+       }
+
     }
 
     /**
