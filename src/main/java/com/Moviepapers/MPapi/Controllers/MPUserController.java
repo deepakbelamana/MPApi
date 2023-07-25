@@ -27,16 +27,16 @@ public class MPUserController {
 
     /**
      * registers the user
+     *
      * @param mpUser
      * @return
      */
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody MPUser mpUser){
-        try{
-            if(MPUserService.checkIfUserExist(mpUser.getEmail())!=null){
+    public ResponseEntity registerUser(@RequestBody MPUser mpUser) {
+        try {
+            if (MPUserService.checkIfUserExist(mpUser.getEmail()) != null) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("email already exists, login with same email");
-            }
-            else{
+            } else {
                 /**
                  * encrypting user password before registering
                  * the user
@@ -46,63 +46,72 @@ public class MPUserController {
                 MPUserRepository.insert(mpUser);
                 return ResponseEntity.ok("registered Successfully, redirecting to login page");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("unable to register now.!");
         }
     }
 
     /**
      * makes the user login
+     *
      * @param mpUser
      * @return
      */
     @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestBody MPUser mpUser)
-    {
-        try{
-            MPUser mpUserFromDB=MPUserService.checkIfUserExist(mpUser.getEmail());
-            if(MPUserService.checkIfUserExist(mpUser.getEmail())!=null){
-                if(pwdEncoder.matches(mpUser.getPassword(),mpUserFromDB.getPassword())) {
+    public ResponseEntity loginUser(@RequestBody MPUser mpUser) {
+        try {
+            MPUser mpUserFromDB = MPUserService.checkIfUserExist(mpUser.getEmail());
+            if (MPUserService.checkIfUserExist(mpUser.getEmail()) != null) {
+                if (pwdEncoder.matches(mpUser.getPassword(), mpUserFromDB.getPassword())) {
                     return ResponseEntity.ok("Login Successfully ,redirecting to home page");
                 } else {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid email/password, try again");
                 }
-            }
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not exist, kindly register yourself");
             }
+        } catch (Exception exc) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong, try again");
         }
-       catch(Exception exc)
-       {
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong, try again");
-       }
 
     }
 
     /**
      * updates when user likes a image
+     *
      * @param mpUser
      * @return
      */
     @PostMapping("/updateLikedInfo")
-    public ResponseEntity updateUserLikedInfo(@RequestBody MPUser mpUser){
-        try{
+    public ResponseEntity updateUserLikedInfo(@RequestBody MPUser mpUser) {
+        try {
             MPUserRepository.updateUserLikedImgInfo(mpUser.getEmail(), mpUser.getLiked());
             return ResponseEntity.ok("Updated your collection");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("unable to update the likes collection");
         }
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(@RequestBody MPUser mpUser){
-        try{
-           return null;
-        }
-        catch (Exception e){
+    public String updateUser(@RequestBody MPUser mpUser) {
+        try {
+            return null;
+        } catch (Exception e) {
             return e.getMessage();
+        }
+    }
+
+    @PostMapping("/resetPwd/sendOTP")
+    public ResponseEntity sendOTPtoUserMail (@RequestBody MPUser mpUser) {
+        try {
+            if (MPUserService.checkIfUserExist(mpUser.getEmail()) != null) {
+                return MPUserService.sendOTPtoUserMail(mpUser.getEmail());
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("seems like you need to register first!");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("There is a problem sending OTP , Try Again.!");
         }
     }
 }
